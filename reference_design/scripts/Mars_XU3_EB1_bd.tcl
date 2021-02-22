@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------------
-# Copyright (c) 2020 by Enclustra GmbH, Switzerland.
+# Copyright (c) 2021 by Enclustra GmbH, Switzerland.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this hardware, software, firmware, and associated documentation files (the
@@ -132,6 +132,7 @@ set_property -dict [ list \
   CONFIG.PSU_MIO_77_PULLUPDOWN {disable} \
   CONFIG.PSU__SD1__GRP_CD__ENABLE {1} \
   CONFIG.PSU__USB0__PERIPHERAL__ENABLE {1} \
+  CONFIG.PSU__USB__RESET__MODE {Disable} \
 ] [get_bd_cells zynq_ultra_ps_e]
 
 create_bd_cell -type ip -vlnv xilinx.com:ip:system_management_wiz system_management_wiz
