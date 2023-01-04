@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------------
-# Copyright (c) 2021 by Enclustra GmbH, Switzerland.
+# Copyright (c) 2022 by Enclustra GmbH, Switzerland.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this hardware, software, firmware, and associated documentation files (the
@@ -28,7 +28,7 @@ set_property BITSTREAM.CONFIG.OVERTEMPSHUTDOWN ENABLE [current_design]
 set_property BITSTREAM.CONFIG.UNUSEDPIN PULLNONE [current_design]
 # ----------------------------------------------------------------------------------
 
-# Anios_0
+# Anios IO Connector 0
 set_property -dict {PACKAGE_PIN C8    IOSTANDARD LVCMOS18  } [get_ports {IOA_D0_P}]
 set_property -dict {PACKAGE_PIN C7    IOSTANDARD LVCMOS18  } [get_ports {IOA_D1_N}]
 set_property -dict {PACKAGE_PIN D5    IOSTANDARD LVCMOS18  } [get_ports {IOA_D2_P}]
@@ -48,7 +48,7 @@ set_property -dict {PACKAGE_PIN R5    IOSTANDARD LVCMOS18  } [get_ports {IOA_D15
 set_property -dict {PACKAGE_PIN D8    IOSTANDARD LVCMOS18  } [get_ports {IOA_CLK_N}]
 set_property -dict {PACKAGE_PIN E8    IOSTANDARD LVCMOS18  } [get_ports {IOA_CLK_P}]
 
-# CAM_0
+# Mini Camera Link Interface 0
 set_property -dict {PACKAGE_PIN C3    IOSTANDARD LVCMOS18  } [get_ports {CAM0_X0_N}]
 set_property -dict {PACKAGE_PIN D3    IOSTANDARD LVCMOS18  } [get_ports {CAM0_X0_P}]
 set_property -dict {PACKAGE_PIN H5    IOSTANDARD LVCMOS18  } [get_ports {CAM0_X1_N}]
@@ -68,7 +68,7 @@ set_property -dict {PACKAGE_PIN H4    IOSTANDARD LVCMOS18  } [get_ports {CAM0_SE
 set_property -dict {PACKAGE_PIN M4    IOSTANDARD LVCMOS18  } [get_ports {CAM0_SERTFG_N}]
 set_property -dict {PACKAGE_PIN M5    IOSTANDARD LVCMOS18  } [get_ports {CAM0_SERTFG_P}]
 
-# CAM_1
+# Mini Camera Link Interface 1
 set_property -dict {PACKAGE_PIN B1    IOSTANDARD LVCMOS18  } [get_ports {CAM1_XY0_N}]
 set_property -dict {PACKAGE_PIN B2    IOSTANDARD LVCMOS18  } [get_ports {CAM1_XY0_P}]
 set_property -dict {PACKAGE_PIN A3    IOSTANDARD LVCMOS18  } [get_ports {CAM1_XY1_N}]
@@ -104,19 +104,21 @@ set_property -dict {PACKAGE_PIN B9    IOSTANDARD LVCMOS18  } [get_ports {HDMI_D2
 set_property -dict {PACKAGE_PIN D6    IOSTANDARD LVCMOS18  } [get_ports {HDMI_CLK_N}]
 set_property -dict {PACKAGE_PIN D7    IOSTANDARD LVCMOS18  } [get_ports {HDMI_CLK_P}]
 
-# I2C_PL
-set_property -dict {PACKAGE_PIN H3    IOSTANDARD LVCMOS18  } [get_ports {I2C_SCL_LV}]
-set_property -dict {PACKAGE_PIN F4    IOSTANDARD LVCMOS18  } [get_ports {I2C_SDA_LV}]
+# I2C PL
+set_property SLEW SLOW [get_ports I2C_SDA]
+set_property SLEW SLOW [get_ports I2C_SCL]
+set_property -dict {PACKAGE_PIN H3    IOSTANDARD LVCMOS18  } [get_ports {I2C_SCL}]
+set_property -dict {PACKAGE_PIN F4    IOSTANDARD LVCMOS18  } [get_ports {I2C_SDA}]
 
-# IO_C
-set_property -dict {PACKAGE_PIN N2    IOSTANDARD LVCMOS18  } [get_ports {IOC_D0_P}]
-set_property -dict {PACKAGE_PIN P1    IOSTANDARD LVCMOS18  } [get_ports {IOC_D1_N}]
-set_property -dict {PACKAGE_PIN R1    IOSTANDARD LVCMOS18  } [get_ports {IOC_D2_P}]
-set_property -dict {PACKAGE_PIN T1    IOSTANDARD LVCMOS18  } [get_ports {IOC_D3_N}]
-set_property -dict {PACKAGE_PIN U2    IOSTANDARD LVCMOS18  } [get_ports {IOC_D4_P}]
-set_property -dict {PACKAGE_PIN U1    IOSTANDARD LVCMOS18  } [get_ports {IOC_D5_N}]
-set_property -dict {PACKAGE_PIN D2    IOSTANDARD LVCMOS18  } [get_ports {IOC_D6_P}]
-set_property -dict {PACKAGE_PIN C2    IOSTANDARD LVCMOS18  } [get_ports {IOC_D7_N}]
+# IO Connector C
+set_property -dict {PACKAGE_PIN N2    IOSTANDARD LVCMOS18  } [get_ports {IOC_D0_SC0_BTN0_N}]
+set_property -dict {PACKAGE_PIN P1    IOSTANDARD LVCMOS18  } [get_ports {IOC_D1_SC1_BTN1_N}]
+set_property -dict {PACKAGE_PIN R1    IOSTANDARD LVCMOS18  } [get_ports {IOC_D2_SC2}]
+set_property -dict {PACKAGE_PIN T1    IOSTANDARD LVCMOS18  } [get_ports {IOC_D3_SC3}]
+set_property -dict {PACKAGE_PIN U2    IOSTANDARD LVCMOS18  } [get_ports {IOC_D4_SC4}]
+set_property -dict {PACKAGE_PIN U1    IOSTANDARD LVCMOS18  } [get_ports {IOC_D5_SC5}]
+set_property -dict {PACKAGE_PIN D2    IOSTANDARD LVCMOS18  } [get_ports {IOC_D6_SC6}]
+set_property -dict {PACKAGE_PIN C2    IOSTANDARD LVCMOS18  } [get_ports {IOC_D7_SC7}]
 
 # LED
 set_property -dict {PACKAGE_PIN P2    IOSTANDARD LVCMOS18  } [get_ports {LED0_N}]

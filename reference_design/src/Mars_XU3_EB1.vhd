@@ -1,5 +1,5 @@
 ---------------------------------------------------------------------------------------------------
--- Copyright (c) 2021 by Enclustra GmbH, Switzerland.
+-- Copyright (c) 2022 by Enclustra GmbH, Switzerland.
 --
 -- Permission is hereby granted, free of charge, to any person obtaining a copy of
 -- this hardware, software, firmware, and associated documentation files (the
@@ -33,7 +33,7 @@ entity Mars_XU3_EB1 is
   
   port (
     
-    -- Anios_0
+    -- Anios IO Connector 0
     IOA_D0_P                       : inout   std_logic;
     IOA_D1_N                       : inout   std_logic;
     IOA_D2_P                       : inout   std_logic;
@@ -53,7 +53,7 @@ entity Mars_XU3_EB1 is
     IOA_CLK_N                      : inout   std_logic;
     IOA_CLK_P                      : inout   std_logic;
     
-    -- CAM_0
+    -- Mini Camera Link Interface 0
     CAM0_X0_N                      : inout   std_logic;
     CAM0_X0_P                      : inout   std_logic;
     CAM0_X1_N                      : inout   std_logic;
@@ -73,7 +73,7 @@ entity Mars_XU3_EB1 is
     CAM0_SERTFG_N                  : inout   std_logic;
     CAM0_SERTFG_P                  : inout   std_logic;
     
-    -- CAM_1
+    -- Mini Camera Link Interface 1
     CAM1_XY0_N                     : inout   std_logic;
     CAM1_XY0_P                     : inout   std_logic;
     CAM1_XY1_N                     : inout   std_logic;
@@ -99,29 +99,29 @@ entity Mars_XU3_EB1 is
     
     -- HDMI
     HDMI_CEC                       : inout   std_logic;
-    HDMI_HPD                       : inout   std_logic;
-    HDMI_D0_N                      : inout   std_logic;
-    HDMI_D0_P                      : inout   std_logic;
-    HDMI_D1_N                      : inout   std_logic;
-    HDMI_D1_P                      : inout   std_logic;
-    HDMI_D2_N                      : inout   std_logic;
-    HDMI_D2_P                      : inout   std_logic;
-    HDMI_CLK_N                     : inout   std_logic;
-    HDMI_CLK_P                     : inout   std_logic;
+    HDMI_HPD                       : in      std_logic;
+    HDMI_D0_N                      : out     std_logic;
+    HDMI_D0_P                      : out     std_logic;
+    HDMI_D1_N                      : out     std_logic;
+    HDMI_D1_P                      : out     std_logic;
+    HDMI_D2_N                      : out     std_logic;
+    HDMI_D2_P                      : out     std_logic;
+    HDMI_CLK_N                     : out     std_logic;
+    HDMI_CLK_P                     : out     std_logic;
     
-    -- I2C_PL
-    I2C_SCL_LV                     : inout   std_logic;
-    I2C_SDA_LV                     : inout   std_logic;
+    -- I2C PL
+    I2C_SCL                        : inout   std_logic;
+    I2C_SDA                        : inout   std_logic;
     
-    -- IO_C
-    IOC_D0_P                       : inout   std_logic;
-    IOC_D1_N                       : inout   std_logic;
-    IOC_D2_P                       : inout   std_logic;
-    IOC_D3_N                       : inout   std_logic;
-    IOC_D4_P                       : inout   std_logic;
-    IOC_D5_N                       : inout   std_logic;
-    IOC_D6_P                       : inout   std_logic;
-    IOC_D7_N                       : inout   std_logic;
+    -- IO Connector C
+    IOC_D0_SC0_BTN0_N              : inout   std_logic;
+    IOC_D1_SC1_BTN1_N              : inout   std_logic;
+    IOC_D2_SC2                     : inout   std_logic;
+    IOC_D3_SC3                     : inout   std_logic;
+    IOC_D4_SC4                     : inout   std_logic;
+    IOC_D5_SC5                     : inout   std_logic;
+    IOC_D6_SC6                     : inout   std_logic;
+    IOC_D7_SC7                     : inout   std_logic;
     
     -- LED
     LED0_N                         : out     std_logic;
@@ -139,10 +139,25 @@ architecture rtl of Mars_XU3_EB1 is
       Clk100              : out    std_logic;
       Clk50               : out    std_logic;
       Rst_N               : out    std_logic;
+      IIC_sda_i           : in     std_logic;
+      IIC_sda_o           : out    std_logic;
+      IIC_sda_t           : out    std_logic;
+      IIC_scl_i           : in     std_logic;
+      IIC_scl_o           : out    std_logic;
+      IIC_scl_t           : out    std_logic;
       LED1_N              : out    std_logic
     );
     
   end component Mars_XU3;
+  
+  component IOBUF is
+    port (
+      I : in STD_LOGIC;
+      O : out STD_LOGIC;
+      T : in STD_LOGIC;
+      IO : inout STD_LOGIC
+    );
+  end component IOBUF;
 
   ---------------------------------------------------------------------------------------------------
   -- signal declarations
@@ -150,6 +165,12 @@ architecture rtl of Mars_XU3_EB1 is
   signal Clk100           : std_logic;
   signal Clk50            : std_logic;
   signal Rst_N            : std_logic;
+  signal IIC_sda_i        : std_logic;
+  signal IIC_sda_o        : std_logic;
+  signal IIC_sda_t        : std_logic;
+  signal IIC_scl_i        : std_logic;
+  signal IIC_scl_o        : std_logic;
+  signal IIC_scl_t        : std_logic;
   signal LedCount         : unsigned(23 downto 0);
 
 begin
@@ -162,7 +183,29 @@ begin
       Clk100               => Clk100,
       Clk50                => Clk50,
       Rst_N                => Rst_N,
+      IIC_sda_i            => IIC_sda_i,
+      IIC_sda_o            => IIC_sda_o,
+      IIC_sda_t            => IIC_sda_t,
+      IIC_scl_i            => IIC_scl_i,
+      IIC_scl_o            => IIC_scl_o,
+      IIC_scl_t            => IIC_scl_t,
       LED1_N               => LED1_N
+    );
+  
+  IIC_scl_iobuf: component IOBUF
+    port map (
+      I => IIC_scl_o,
+      IO => I2C_SCL,
+      O => IIC_scl_i,
+      T => IIC_scl_t
+    );
+  
+  IIC_sda_iobuf: component IOBUF
+    port map (
+      I => IIC_sda_o,
+      IO => I2C_SDA,
+      O => IIC_sda_i,
+      T => IIC_sda_t
     );
   
   process (Clk50)
@@ -176,5 +219,5 @@ begin
     end if;
   end process;
   Led0_N <= '0' when LedCount(LedCount'high) = '0' else 'Z';
-
+  
 end rtl;
